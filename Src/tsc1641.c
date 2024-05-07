@@ -50,7 +50,7 @@ static TSC1641Handle tsc_handles[ NUM_OF_INSTANCES ] = {
 	}
 };
 
-static uint8_t DataCurrent[ 2 ];
+static uint8_t data_current[ 2 ];
 
 //===========================================  INTERFACE ===========================================
 
@@ -130,8 +130,8 @@ double TSC1641GetCurrentAmp( TSC1641_NUM_T instance ){
 		return 0.0;
 	}else{
 		TSC1641Handle* tscHandle = &( tsc_handles[ instance ] );
-		TSC1641_GetCurrentVal_p( tscHandle, DataCurrent );
-		uint16_t digitalCurrent = ( ( DataCurrent[ 0 ] << 8 ) | DataCurrent[ 1 ] );
+		TSC1641_GetCurrentVal_p( tscHandle, data_current );
+		uint16_t digitalCurrent = ( ( data_current[ 0 ] << 8 ) | data_current[ 1 ] );
 		return I_LSB * digitalCurrent;
 	}
 }
@@ -152,10 +152,10 @@ HAL_StatusTypeDef TSC1641_SetConf2_p( TSC1641Handle *tscHandle, RegConfiguration
 /*write the shunt resisor value (TSC1641_RegAdd_RShunt) in the RShunt register*/
 static HAL_StatusTypeDef TSC1641_SetRShunt_p( TSC1641Handle* tscHandle ){
 	I2C_HandleTypeDef *hi2c = I2C_Instances[ tscHandle->i2c_id ];
-	uint8_t Data[2] = {(TSC1641_RShunt_Val>>8),(uint8_t)TSC1641_RShunt_Val};
-	uint8_t Datasend[3] = {TSC1641_RegAdd_RShunt, Data[0], Data[1]};
+	uint8_t data[2] = {(TSC1641_RShunt_Val>>8),(uint8_t)TSC1641_RShunt_Val};
+	uint8_t datasend[3] = {TSC1641_RegAdd_RShunt, data[0], data[1]};
 //	return HAL_I2C_Master_Transmit(hi2c, I2C_TSC1641_ADD_W, &Datasend[0], 3, 1000);
-	return HAL_I2C_Master_Transmit(hi2c, tscHandle->devWriteAddress, &Datasend[0], 3, 1000);
+	return HAL_I2C_Master_Transmit(hi2c, tscHandle->devWriteAddress, &datasend[0], 3, 1000);
 }
 
 static HAL_StatusTypeDef TSC1641_SetMask_p( TSC1641Handle* tscHandle, RegMask* reg){
