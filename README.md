@@ -1,2 +1,1 @@
-# libtsc1641
-lib for tsc1641
+#lib for steval-DIGAEv1A
